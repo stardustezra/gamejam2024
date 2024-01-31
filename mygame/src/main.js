@@ -8,10 +8,12 @@ const MAX_JUMPS = 2;
 kaboom();
 
 loadSprite("wizard", "sprites/wizard.png");
+loadSprite("batman", "sprites/batman.png");
 setBackground(0, 0, 0);
 
 scene("game", () => {
   setGravity(1600);
+
   const player = add([
     sprite("wizard"),
     pos(80, 40),
@@ -20,6 +22,13 @@ scene("game", () => {
     {
       jumpCount: 0,
     },
+  ]);
+
+  const enemy = add([
+    sprite("batman"),
+    pos(width() - 80, height() - FLOOR_HEIGHT),
+    area(),
+    body(),
   ]);
 
   add([
@@ -35,7 +44,7 @@ scene("game", () => {
   function jump() {
     if (player.isGrounded()) {
       player.jump(JUMP_FORCE);
-      player.jumpCount = 0; // Reset jump count on ground
+      player.jumpCount = 0; // Reset jump count on the ground
     } else if (player.jumpCount < MAX_JUMPS) {
       player.jump(JUMP_FORCE);
       player.jumpCount++;
@@ -66,6 +75,10 @@ scene("game", () => {
     go("lose", score);
   });
 
+  player.onCollide("enemy", () => {
+    go("lose", score);
+  });
+
   let score = 0;
 
   const scoreLabel = add([text(score), pos(24, 24)]);
@@ -73,6 +86,10 @@ scene("game", () => {
   onUpdate(() => {
     score++;
     scoreLabel.text = score;
+
+    // Move the enemy towards the player
+    const direction = player.pos.sub(enemy.pos).unit();
+    enemy.move(direction.scale(SPEED));
   });
 });
 
