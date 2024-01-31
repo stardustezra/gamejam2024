@@ -8,6 +8,7 @@ const MAX_JUMPS = 2;
 kaboom();
 
 loadSprite("wizard", "sprites/wizard.png");
+setBackground(0, 0, 0);
 
 scene("game", () => {
   setGravity(1600);
@@ -28,7 +29,7 @@ scene("game", () => {
     anchor("botleft"),
     area(),
     body({ isStatic: true }),
-    color(127, 200, 255),
+    color(255, 255, 255),
   ]);
 
   function jump() {
@@ -51,7 +52,7 @@ scene("game", () => {
       outline(4),
       pos(width(), height() - FLOOR_HEIGHT),
       anchor("botleft"),
-      color(255, 140, 255),
+      color(255, 255, 255),
       move(LEFT, SPEED),
       "tree",
     ]);
